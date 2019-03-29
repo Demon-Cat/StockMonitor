@@ -7,6 +7,8 @@
 #include <QNetworkReply>
 #include <QTimer>
 
+#include "stockwidget.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -19,22 +21,19 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-
 private slots:
     void onTimer();
+    void onNetworkRequestFinished(QNetworkReply *reply);
+
+    void onAddNewStock();
 
 private:
     Ui::MainWindow *ui;
 
-    bool m_isPressed = false;
-    QPoint m_pressedPos;
-
     QNetworkAccessManager *m_manager;
     QTimer *m_timer;
+
+    QMap<QString, StockWidget *> m_stockMap;
 };
 
 #endif // MAINWINDOW_H

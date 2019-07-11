@@ -2,8 +2,12 @@
 #define STOCKWIDGET_H
 
 #include <QWidget>
-#include <QMenu>
-#include <QAction>
+#include <QTimer>
+#include <QMap>
+
+#include "stockinfo.h"
+#include "stockitem.h"
+#include "addstock.h"
 
 namespace Ui {
 class StockWidget;
@@ -13,38 +17,60 @@ class StockWidget : public QWidget
 {
     Q_OBJECT
 
+    enum State
+    {
+        StateNormal,
+        StateAboutToShow,
+        StateAboutToHide
+    };
+
 public:
-    explicit StockWidget(const QString &url, QWidget *parent = nullptr);
+    explicit StockWidget(QWidget *parent = nullptr);
     ~StockWidget();
 
-    QString url() const;
+    void setAboutToShow();
+    void setAboutToHide();
+    void updateShowOrHide();
 
-    void setValue(qreal current, qreal percent);
+    void setHide();
+
+    void updateStockInfo(StockInfo *info);
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
+//    void mousePressEvent(QMouseEvent *event) override;
+//    void mouseReleaseEvent(QMouseEvent *event) override;
+//    void mouseMoveEvent(QMouseEvent *event) override;
+
+    void enterEvent(QEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+
     void paintEvent(QPaintEvent *event) override;
-    void contextMenuEvent(QContextMenuEvent *event) override;
 
 signals:
-    void sig_newStock();
+
+private slots:
+    void onStateTimer();
+    void onMainColorChanged(const QColor &color);
+
+    void on_toolButton_add_clicked();
 
 private:
     Ui::StockWidget *ui;
 
-    QString m_url;
-
     bool m_isPressed = false;
     QPoint m_pressedPos;
 
-    qreal m_currentValue = 0;
-    qreal m_percent = 0;
+    bool m_isEnter = false;
 
-    QMenu *m_menu;
-    QAction *m_action_quit;
-    QAction *m_action_new;
+    State m_state = StateNormal;
+    QTimer *m_stateTimer;
+
+    int m_shadowWidth = 10;
+
+    QColor m_mainColor = QColor("#A00000");
+
+    AddStock *m_addStock = nullptr;
+    QMap<QString, StockItem *> m_stockMap;
 };
 
 #endif // STOCKWIDGET_H

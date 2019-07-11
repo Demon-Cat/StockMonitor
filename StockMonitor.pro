@@ -25,19 +25,45 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    stockwidget.cpp
+    addstock.cpp \
+    basebutton.cpp \
+    baseshadowdialog.cpp \
+    capsulestock.cpp \
+    main.cpp \
+    mainmenu.cpp \
+    mainwindow.cpp \
+    menubutton.cpp \
+    roundedbutton.cpp \
+    stockinfo.cpp \
+    stockitem.cpp \
+    stockwidget.cpp \
+    textbutton.cpp
 
 HEADERS += \
-        mainwindow.h \
-    stockwidget.h
+    addstock.h \
+    basebutton.h \
+    baseshadowdialog.h \
+    capsulestock.h \
+    mainmenu.h \
+    mainwindow.h \
+    menubutton.h \
+    roundedbutton.h \
+    stockinfo.h \
+    stockitem.h \
+    stockwidget.h \
+    textbutton.h
 
 FORMS += \
-        mainwindow.ui \
+    addstock.ui \
+    mainmenu.ui \
+    mainwindow.ui \
+    stockitem.ui \
     stockwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resource.qrc
